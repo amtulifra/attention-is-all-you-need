@@ -42,6 +42,8 @@ ENV/
 logs/
 *.log
 
+runs/ 
+
 # Checkpoints
 checkpoints/
 
