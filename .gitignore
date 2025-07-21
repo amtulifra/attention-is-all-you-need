@@ -18,6 +18,9 @@ var/
 wheels/
 *.egg-info/
 .installed.cfg
+
+# TensorBoard runs
+runs/
 *.egg
 
 # Virtual Environment
@@ -42,7 +45,6 @@ ENV/
 logs/
 *.log
 
-runs/ 
 
 # Checkpoints
 checkpoints/
