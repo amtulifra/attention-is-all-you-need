@@ -1,12 +1,46 @@
+# Core
 torch>=2.0.0
-torchvision
-torchaudio
-torchtext
-tqdm
-numpy
-matplotlib
-tensorboard
-tqdm>=4.62.0
+torchvision>=0.15.0
+torchtext>=0.15.0
+torchdata>=0.6.0
+numpy>=1.20.0
+
+# Data Processing
+pandas>=1.3.0
+pyyaml>=6.0.0
+scikit-learn>=1.0.0
+
+# NLP
+nltk>=3.6.0
+sacrebleu>=2.0.0
 sentencepiece>=0.1.99
+subword-nmt>=0.3.7
+rouge>=1.0.1
+
+# Visualization
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# Utils
+tqdm>=4.60.0
+
+# Logging
 tensorboard>=2.9.0
-nltk
+
+# Testing
+pytest>=6.2.0
+pytest-cov>=2.12.0
+
+# Documentation
+sphinx>=4.0.0
+sphinx-rtd-theme>=0.5.0
+
+# Development
+black>=21.5b2
+isort>=5.8.0
+flake8>=3.9.0
+mypy>=0.812
+
+# Optional (for deployment/advanced features)
+gradio>=3.0.0
+onnxruntime>=1.8.0

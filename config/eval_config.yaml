@@ -1,0 +1,93 @@
+# Evaluation Configuration
+
+data:
+  # Paths
+  test_path: "data/raw/test.txt"    # Path to test data
+  output_dir: "results"             # Directory to save evaluation results
+  
+  # Data Loading
+  batch_size: 32                    # Batch size for evaluation
+  num_workers: 4                    # Number of data loading workers
+  
+  # Output
+  save_attention: True             # Whether to save attention visualizations
+  save_predictions: True           # Whether to save model predictions
+  output_file: "predictions.txt"    # File to save predictions
+  
+  # Metrics
+  metrics: ["bleu", "rouge", "meteor"]  # Metrics to compute
+  
+  # Beam Search
+  beam_size: 5                      # Beam size for generation
+  max_length: 100                   # Maximum generation length
+  min_length: 1                     # Minimum generation length
+  length_penalty: 1.0               # Length penalty for beam search
+  
+  # Sampling
+  do_sample: False                  # Whether to use sampling
+  temperature: 1.0                  # Temperature for sampling
+  top_k: 50                         # Top-k sampling
+  top_p: 1.0                        # Nucleus sampling
+  
+  # Special Tokens
+  pad_token_id: 0                   # Padding token ID
+  bos_token_id: 1                   # Beginning of sequence token ID
+  eos_token_id: 2                   # End of sequence token ID
+  unk_token_id: 3                   # Unknown token ID
+  
+  # Output Format
+  output_format: "text"             # Output format (text/json)
+  
+  # Visualization
+  num_visualizations: 5             # Number of examples to visualize
+  save_attention_plots: True        # Whether to save attention plots
+  attention_plot_dir: "attention_plots"  # Directory to save attention plots
+  
+  # BLEU Score
+  bleu_smoothing: "exp"             # Smoothing method for BLEU (exp/none/floor/add-k)
+  bleu_max_order: 4                 # Maximum n-gram order for BLEU
+  
+  # ROUGE Score
+  rouge_stemming: True              # Whether to use stemming for ROUGE
+  rouge_remove_punct: True          # Whether to remove punctuation for ROUGE
+  
+  # METEOR Score
+  meteor_language: "en"             # Language for METEOR
+  
+  # Diversity Metrics
+  compute_diversity: True           # Whether to compute diversity metrics
+  
+  # Human Evaluation
+  save_for_human_eval: False        # Whether to save outputs for human evaluation
+  human_eval_file: "human_eval.txt" # File to save human evaluation outputs
+  
+  # Error Analysis
+  save_errors: True                 # Whether to save error analysis
+  error_analysis_file: "errors.json" # File to save error analysis
+  
+  # Device
+  device: "cuda"                    # Device to use (cuda/cpu)
+  no_cuda: False                    # Disable CUDA
+  
+  # Debugging
+  debug: False                      # Debug mode
+  num_debug_samples: 10             # Number of samples to process in debug mode
+  
+  # Logging
+  log_level: "info"                 # Logging level (debug/info/warning/error/critical)
+  
+  # Model
+  model_path: "checkpoints/best.pt" # Path to model checkpoint
+  config_path: "config/model_config.yaml"  # Path to model config
+  
+  # Tokenizer
+  tokenizer_path: "tokenizer"       # Path to tokenizer
+  
+  # Generation
+  num_return_sequences: 1           # Number of sequences to generate per input
+  repetition_penalty: 1.0           # Penalty for repeating tokens
+  no_repeat_ngram_size: 0           # Prevent n-gram repetition (0 = disable)
+  
+  # Output Decoding
+  skip_special_tokens: True         # Whether to skip special tokens in output
+  clean_up_tokenization_spaces: True # Clean up tokenization spaces

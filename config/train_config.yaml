@@ -1,0 +1,112 @@
+# Training Configuration
+
+data:
+  # Paths
+  train_path: "data/raw/train.txt"  # Path to training data
+  valid_path: "data/raw/valid.txt"  # Path to validation data
+  test_path: "data/raw/test.txt"    # Path to test data
+  
+  # Data Loading
+  batch_size: 32                    # Batch size
+  num_workers: 4                    # Number of data loading workers
+  pin_memory: True                  # Whether to pin memory for faster transfer to GPU
+  
+  # Sequence Length
+  max_length: 100                   # Maximum sequence length
+  min_length: 3                     # Minimum sequence length
+  
+  # Tokenization
+  src_lang: "en"                   # Source language
+  tgt_lang: "fr"                   # Target language
+  lowercase: True                   # Whether to lowercase the text
+  remove_punctuation: True          # Whether to remove punctuation
+  
+training:
+  # Optimization
+  epochs: 100                       # Number of training epochs
+  learning_rate: 0.0001             # Learning rate
+  weight_decay: 0.01                # Weight decay
+  clip_grad_norm: 1.0               # Gradient clipping
+  
+  # Learning Rate Schedule
+  warmup_steps: 4000                # Number of warmup steps
+  lr_scheduler: "noam"              # Learning rate scheduler (noam/step/plateau)
+  lr_decay_factor: 0.5              # Factor for LR decay
+  lr_patience: 3                    # Patience for LR scheduler
+  
+  # Regularization
+  dropout: 0.1                      # Dropout probability
+  label_smoothing: 0.1              # Label smoothing epsilon
+  
+  # Training Process
+  gradient_accumulation_steps: 1     # Number of steps for gradient accumulation
+  max_grad_norm: 1.0                # Maximum gradient norm
+  seed: 42                          # Random seed
+  
+  # Mixed Precision
+  fp16: False                       # Whether to use mixed precision training
+  amp_level: "O1"                   # Apex AMP optimization level
+  
+  # Checkpointing
+  save_dir: "checkpoints"           # Directory to save checkpoints
+  save_every: 1                     # Save checkpoint every N epochs
+  keep_checkpoints: 3               # Number of checkpoints to keep
+  
+  # Early Stopping
+  early_stopping: True              # Whether to use early stopping
+  patience: 5                       # Patience for early stopping
+  min_delta: 0.0001                 # Minimum change to qualify as improvement
+  
+  # Logging
+  log_dir: "runs"                   # Directory for TensorBoard logs
+  log_interval: 10                  # Log every N batches
+  eval_interval: 1000               # Evaluate every N steps
+  
+  # Device
+  device: "cuda"                    # Device to use (cuda/cpu)
+  no_cuda: False                    # Disable CUDA
+  local_rank: -1                    # For distributed training
+  
+  # Distributed Training
+  world_size: 1                     # Number of processes for distributed training
+  dist_backend: "nccl"              # Backend for distributed training
+  dist_url: "env://"                # URL for distributed training
+  
+  # Debugging
+  debug: False                      # Debug mode
+  overfit_batches: 0                # Overfit on a small number of batches (0 = disable)
+  
+  # Experiment Tracking
+  experiment_name: "transformer"    # Name for the experiment
+  project_name: "transformer-nmt"   # Project name for experiment tracking
+  
+  # Model Saving
+  save_best_only: True              # Save only the best model
+  best_metric: "bleu"               # Metric to determine the best model (loss/bleu/accuracy)
+  
+  # Mixed Precision
+  use_amp: False                    # Use automatic mixed precision
+  opt_level: "O1"                   # Optimization level for Apex AMP
+  
+  # Gradient Clipping
+  gradient_clip_val: 1.0            # Maximum gradient norm for clipping
+  gradient_clip_algorithm: "norm"   # Gradient clipping algorithm (norm/value)
+  
+  # Batch Processing
+  max_tokens: 4096                  # Maximum number of tokens per batch
+  update_freq: 1                    # Update parameters every N batches
+  
+  # Validation
+  validate_every: 1000              # Run validation every N steps
+  max_val_batches: None             # Maximum number of validation batches (None = all)
+  
+  # Checkpoint
+  resume_from_checkpoint: None      # Path to checkpoint to resume training from
+  auto_resume: True                 # Automatically resume from the latest checkpoint
+  
+  # Data Augmentation
+  random_seed: 42                   # Random seed for reproducibility
+  shuffle: True                     # Whether to shuffle the training data
+  
+  # Mixed Precision Training
+  precision: 32                     # 16 or 32 bit precision (16 enables mixed precision)

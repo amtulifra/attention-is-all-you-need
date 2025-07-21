@@ -1,0 +1,105 @@
+# Inference Configuration
+
+model:
+  # Model Paths
+  model_path: "checkpoints/best.pt"  # Path to model checkpoint
+  config_path: "config/model_config.yaml"  # Path to model config
+  
+  # Device
+  device: "cuda"                    # Device to use (cuda/cpu)
+  no_cuda: False                    # Disable CUDA
+  
+  # Tokenizer
+  tokenizer_path: "tokenizer"       # Path to tokenizer
+  src_lang: "en"                    # Source language
+  tgt_lang: "fr"                    # Target language
+  
+  # Generation
+  max_length: 100                   # Maximum generation length
+  min_length: 1                     # Minimum generation length
+  beam_size: 5                      # Beam size for beam search
+  length_penalty: 1.0               # Length penalty for beam search
+  
+  # Sampling
+  do_sample: False                  # Whether to use sampling
+  temperature: 1.0                  # Temperature for sampling
+  top_k: 50                         # Top-k sampling
+  top_p: 1.0                        # Nucleus sampling
+  
+  # Output
+  num_return_sequences: 1           # Number of sequences to generate per input
+  repetition_penalty: 1.0           # Penalty for repeating tokens
+  no_repeat_ngram_size: 0           # Prevent n-gram repetition (0 = disable)
+  
+  # Special Tokens
+  pad_token_id: 0                   # Padding token ID
+  bos_token_id: 1                   # Beginning of sequence token ID
+  eos_token_id: 2                   # End of sequence token ID
+  unk_token_id: 3                   # Unknown token ID
+  
+  # Output Format
+  output_format: "text"             # Output format (text/json)
+  skip_special_tokens: True         # Whether to skip special tokens in output
+  clean_up_tokenization_spaces: True # Clean up tokenization spaces
+  
+  # Interactive Mode
+  interactive: True                 # Interactive mode (read from stdin)
+  input_file: null                  # Input file (if not interactive)
+  output_file: null                 # Output file (if not interactive)
+  
+  # Web Demo
+  host: "0.0.0.0"                   # Host for web demo
+  port: 5000                        # Port for web demo
+  debug: False                      # Debug mode for web demo
+  
+  # Logging
+  log_level: "info"                 # Logging level (debug/info/warning/error/critical)
+  
+  # Performance
+  use_cache: True                   # Use cache for faster generation
+  
+  # Special Modes
+  force_words: []                   # Force certain words to appear in the output
+  bad_words: []                     # Prevent certain words from appearing in the output
+  
+  # Length Constraints
+  min_new_tokens: 0                 # Minimum number of tokens to generate
+  max_new_tokens: null              # Maximum number of new tokens to generate
+  
+  # Early Stopping
+  early_stopping: True              # Whether to use early stopping
+  num_beams: 1                      # Number of beams for beam search
+  num_beam_groups: 1                # Number of groups for diverse beam search
+  diversity_penalty: 0.0            # Diversity penalty for diverse beam search
+  
+  # Output Options
+  return_dict_in_generate: False    # Whether to return a dict with additional outputs
+  output_scores: False              # Whether to output prediction scores
+  output_attentions: False          # Whether to output attention weights
+  output_hidden_states: False       # Whether to output hidden states
+  
+  # Decoding Strategy
+  do_early_stopping: False          # Whether to stop the beam search when at least num_beams sentences are finished
+  use_beam_fallback: False          # Whether to fall back to greedy search if beam search fails
+  
+  # Advanced Generation
+  forced_bos_token_id: null         # The id of the token to force as the first generated token
+  forced_eos_token_id: null         # The id of the token to force as the last generated token
+  
+  # Logit Processing
+  suppress_tokens: []               # List of tokens to suppress during generation
+  begin_suppress_tokens: []         # List of tokens to begin suppressing after their first occurrence
+  
+  # Special Generation
+  forced_decoder_ids: []            # List of token ids that must be generated in order
+  
+  # Generation Parameters
+  typical_p: 1.0                    # The amount of probability mass to consider for typical decoding
+  epsilon_cutoff: 0.0               # If > 0, only the most probable tokens with cumulative probability >= epsilon_cutoff are kept
+  eta_cutoff: 0.0                   # Eta sampling parameter
+  
+  # Advanced Options
+  renormalize_logits: False         # Whether to renormalize logits after applying all logit processors
+  
+  # Output Processing
+  remove_invalid_values: False      # Whether to remove potential NaN and inf outputs
