@@ -38,6 +38,14 @@ class MultiHeadAttention(nn.Module):
             output: Output tensor of shape [batch_size, seq_len_q, d_model]
             attention_weights: Optional attention weights if store_attention=True
         """
+        # Ensure inputs are tensors, not tuples
+        if isinstance(q, tuple):
+            q = q[0]
+        if isinstance(k, tuple):
+            k = k[0]
+        if isinstance(v, tuple):
+            v = v[0]
+            
         batch_size = q.size(0)
         
         # Linear projections and split into heads

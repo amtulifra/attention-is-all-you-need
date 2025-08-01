@@ -45,18 +45,31 @@ class DecoderLayer(nn.Module):
             Output tensor of shape [batch_size, tgt_seq_len, d_model]
             Tuple of (self_attention_weights, enc_dec_attention_weights) if store_attention=True
         """
+        # Ensure x is a tensor, not a tuple
+        if isinstance(x, tuple):
+            x = x[0]
+            
         # Self attention with residual connection and layer normalization
         self_attn_output, self_attn_weights = self.self_attn(x, x, x, tgt_mask, store_attention)
+        if isinstance(self_attn_output, tuple):
+            self_attn_output = self_attn_output[0]  # Take the first element if it's a tuple
+            
         x = self.norm1(x + self.dropout(self_attn_output))
         
         # Encoder-decoder attention with residual connection and layer normalization
         enc_dec_attn_output, enc_dec_attn_weights = self.enc_dec_attn(
             x, enc_output, enc_output, src_mask, store_attention
         )
+        if isinstance(enc_dec_attn_output, tuple):
+            enc_dec_attn_output = enc_dec_attn_output[0]  # Take the first element if it's a tuple
+            
         x = self.norm2(x + self.dropout(enc_dec_attn_output))
         
         # Feed-forward network with residual connection and layer normalization
         ff_output = self.feed_forward(x)
+        if isinstance(ff_output, tuple):
+            ff_output = ff_output[0]  # Take the first element if it's a tuple
+            
         x = self.norm3(x + self.dropout(ff_output))
         
         if store_attention:
@@ -98,6 +111,10 @@ class Decoder(nn.Module):
         """
         all_self_attn_weights = []
         all_enc_dec_attn_weights = []
+        
+        # Ensure x is a tensor, not a tuple
+        if isinstance(x, tuple):
+            x = x[0]  # Take the first element if it's a tuple
         
         for layer in self.layers:
             x, attn_weights = layer(x, enc_output, src_mask, tgt_mask, store_attention)

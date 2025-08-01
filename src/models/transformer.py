@@ -151,3 +151,45 @@ class Transformer(nn.Module):
     def count_parameters(self):
         """Return the number of trainable parameters in the model."""
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
+    
+    def generate(self, src, max_length=100, beam_size=5, length_penalty=1.0, temperature=1.0):
+        """
+        Generate a translation for the source sequence using greedy decoding.
+        
+        Args:
+            src: Source sequence tensor of shape [batch_size, src_len]
+            max_length: Maximum length of the generated sequence
+            beam_size: Not used, kept for compatibility
+            length_penalty: Not used, kept for compatibility
+            temperature: Not used, kept for compatibility
+            
+        Returns:
+            Tensor of generated token IDs of shape [batch_size, max_length]
+        """
+        self.eval()
+        device = src.device
+        batch_size = src.size(0)
+        
+        # Encode the source sequence
+        memory = self.encode(src)  # [batch_size, src_len, d_model]
+        
+        # Initialize target with <bos> token (1)
+        tgt = torch.ones((batch_size, 1), dtype=torch.long, device=device)  # [batch_size, 1]
+        
+        # Generate tokens one by one
+        for i in range(max_length - 1):  # -1 because we already have <bos>
+            # Get decoder output - ignore attention weights
+            output, _ = self.decode(tgt, memory)  # [batch_size, tgt_len, d_model]
+            output = self.fc_out(output)  # [batch_size, tgt_len, tgt_vocab_size]
+            
+            # Get the most likely next token
+            next_token = output.argmax(dim=-1)[:, -1].unsqueeze(1)  # [batch_size, 1]
+            
+            # Append to the sequence
+            tgt = torch.cat([tgt, next_token], dim=1)
+            
+            # Stop if all sequences have reached <eos> (2)
+            if (next_token == 2).all():
+                break
+        
+        return tgt

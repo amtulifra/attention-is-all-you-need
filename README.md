@@ -5,16 +5,170 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A PyTorch implementation of the Transformer model from the paper ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762) by Vaswani et al. (2017). This implementation is designed to be clean, modular, and easy to understand while maintaining high performance.
+A clean PyTorch implementation of the Transformer model from the paper ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762) by Vaswani et al. (2017). This project includes training, evaluation, and inference scripts for machine translation tasks.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8+
+- PyTorch 2.0+
+- NLTK
+- tqdm
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/attention-is-all-you-need.git
+   cd attention-is-all-you-need
+   ```
+
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   # On Windows:
+   .\venv\Scripts\activate
+   # On Unix/macOS:
+   # source venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Download Dataset
+
+Download and prepare the Multi30k dataset:
+```bash
+python download_multi30k.py
+```
+
+### Training
+
+Train the model with default settings:
+```bash
+python train.py --config config/train_config.yaml
+```
+
+### Evaluation
+
+Evaluate the trained model:
+```bash
+python evaluate_final.py --model checkpoints/model_best.pt --data-dir data/multi30k --batch-size 32
+```
+
+### Inference
+
+Translate a single sentence:
+```bash
+python inference.py --model checkpoints/model_best.pt --input "Your input text here"
+```
+
+## 📊 Model Performance
+
+Current metrics on the Multi30k test set:
+
+| Metric | Score | Description |
+|--------|-------|-------------|
+| BLEU | 0.38 | Translation quality (0-100 scale) |
+| Exact Match | 0.0% | Perfect translations |
+| Token Accuracy | 17.0% | Correct word choices |
+| Length Difference | +12.5 | Predictions are too long |
+
+## Project Structure
+
+```
+.
+├── checkpoints/         # Saved model checkpoints
+├── config/              # Configuration files
+│   ├── train_config.yaml
+│   ├── eval_config.yaml
+│   └── inference_config.yaml
+├── data/                # Dataset (created after download)
+├── src/                 # Source code
+│   ├── data/            # Data loading and processing
+│   ├── models/          # Model architecture
+│   └── utils/           # Utility functions
+├── download_multi30k.py # Dataset download script
+├── evaluate_final.py    # Evaluation script
+├── inference.py         # Inference script
+├── requirements.txt     # Dependencies
+└── train.py            # Training script
+```
+
+## 📝 Notes
+
+- The current model shows signs of overfitting and requires further tuning
+- Training logs are saved to `logs/transformer.log`
+- Evaluation results are saved to `results/evaluation_results.json`
+- Model checkpoints are saved to `checkpoints/`
+
+## 🚧 TODO
+
+### High Priority
+- [ ] Implement proper learning rate scheduling with warmup (as per paper: 4000 warmup steps)
+- [ ] Add beam search for better inference quality
+- [ ] Fix tokenization issues causing poor BLEU scores
+- [ ] Implement label smoothing (ε=0.1)
+- [ ] Add gradient clipping (paper uses 1.0)
+
+### Model Improvements
+- [ ] Weight tying between embedding and output layers
+- [ ] Add model checkpoint averaging
+- [ ] Implement mixed-precision training
+- [ ] Add proper model initialization (paper uses xavier_uniform_)
+
+### Evaluation
+- [ ] Add more robust evaluation metrics (e.g., ROUGE, METEOR)
+- [ ] Implement proper BLEU tokenization (mteval-v13a.pl)
+- [ ] Add validation during training
+- [ ] Log attention weights for visualization
+
+### Code Quality
+- [ ] Add comprehensive unit tests
+- [ ] Improve error handling and logging
+- [ ] Add type hints throughout the codebase
+- [ ] Document the training process and hyperparameters
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🚀 Features
 
 - **Complete Transformer Architecture**: Implements both encoder and decoder with multi-head attention
-- **Efficient Training**: Supports mixed-precision training, gradient accumulation, and multi-GPU training
+- **Efficient Training**: Supports mixed-precision training and gradient accumulation
 - **Flexible Configuration**: Easy to modify model architecture and training parameters
-- **Comprehensive Evaluation**: Includes BLEU score calculation and attention visualization
-- **Production Ready**: Export models to ONNX/TorchScript for deployment
-- **Interactive Demo**: Web interface for model inference
+- **Comprehensive Evaluation**: Includes BLEU score calculation, exact match, and token-level accuracy
+
+## 📊 Model Performance
+
+Current metrics on the Multi30k test set:
+
+| Metric | Score | Description |
+|--------|-------|-------------|
+| BLEU | 0.38 | Translation quality (0-100 scale) |
+| Exact Match | 0.0% | Perfect translations |
+| Token Accuracy | 17.0% | Correct word choices |
+| Length Difference | +12.5 | Predictions are too long |
+
+### Model Architecture
+
+- **Encoder Layers**: 6
+- **Decoder Layers**: 6
+- **Model Dimension**: 512
+- **Feed-Forward Dimension**: 2048
+- **Attention Heads**: 8
+- **Source/Target Vocabulary**: 8,000 tokens each
+
+### Common Issues
+
+If you encounter issues:
+- **Out of memory?** Reduce the batch size (e.g., `--batch-size 16`)
+- **File not found?** Verify your file paths and run the download script
+- **Shape errors?** Ensure model architecture matches the checkpoint
+- **Strange outputs?** Check if the tokenizer matches the training data
 
 ## 📦 Installation
 
@@ -37,19 +191,29 @@ A PyTorch implementation of the Transformer model from the paper ["Attention Is 
 
 ## 🏃‍♂️ Quick Start
 
-### Training
+### 1. Download Dataset
 
 ```bash
-python src/train.py --config config/train_config.yaml
+python download_multi30k.py
 ```
 
-### Inference
+### 2. Train the Model
 
 ```bash
-python src/inference.py --model checkpoints/model_best.pt --input "Hello, how are you?"
+python train.py --config config/train_config.yaml
 ```
 
-### Web Demo
+### 3. Evaluate the Model
+
+```bash
+python evaluate_final.py --model checkpoints/model_best.pt --data-dir data/multi30k --batch-size 32
+```
+
+### 4. Run Inference
+
+```bash
+python inference.py --model checkpoints/model_best.pt --input "Your input text here"
+```
 
 ```bash
 python src/app.py
@@ -143,25 +307,6 @@ python src/inference.py \
   --input "Your input text here" \
   --max_length 100 \
   --beam_size 5
-```
-
-### Python API
-
-```python
-from src.models.transformer import Transformer
-from src.utils.tokenizer import Tokenizer
-
-# Load model
-model = Transformer.load_from_checkpoint('checkpoints/model_best.pt')
-model.eval()
-
-# Tokenize input
-input_ids = tokenizer.encode("Your input text here")
-
-# Generate output
-output_ids = model.generate(input_ids, max_length=100)
-output_text = tokenizer.decode(output_ids)
-print(output_text)
 ```
 
 ## 📊 Evaluation
@@ -281,11 +426,14 @@ This will start an interactive session where you can input German sentences to b
 
 ## Results
 
-On the Multi30k test set, the model achieves:
+On the Multi30k test set, the model currently shows these metrics:
 
-- BLEU Score: ~[Your BLEU score here]
-- Training Loss: ~[Your training loss here]
-- Validation Loss: ~[Your validation loss here]
+- **BLEU Score**: 0.38 (needs improvement)
+- **Exact Match**: 0.0%
+- **Token Accuracy**: 17.0%
+- **Average Length Difference**: +12.5 tokens
+
+> Note: These results suggest the model requires further training and tuning. The outputs show signs of overfitting or training issues, with repetitive patterns and poor translation quality.
 
 ## References
 
