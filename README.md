@@ -65,17 +65,6 @@ Translate a single sentence:
 python inference.py --model checkpoints/model_best.pt --input "Your input text here"
 ```
 
-## 📊 Model Performance
-
-Current metrics on the Multi30k test set:
-
-| Metric | Score | Description |
-|--------|-------|-------------|
-| BLEU | 0.38 | Translation quality (0-100 scale) |
-| Exact Match | 0.0% | Perfect translations |
-| Token Accuracy | 17.0% | Correct word choices |
-| Length Difference | +12.5 | Predictions are too long |
-
 ## Project Structure
 
 ```
@@ -96,44 +85,6 @@ Current metrics on the Multi30k test set:
 ├── requirements.txt     # Dependencies
 └── train.py            # Training script
 ```
-
-## 📝 Notes
-
-- The current model shows signs of overfitting and requires further tuning
-- Training logs are saved to `logs/transformer.log`
-- Evaluation results are saved to `results/evaluation_results.json`
-- Model checkpoints are saved to `checkpoints/`
-
-## 🚧 TODO
-
-### High Priority
-- [ ] Implement proper learning rate scheduling with warmup (as per paper: 4000 warmup steps)
-- [ ] Add beam search for better inference quality
-- [ ] Fix tokenization issues causing poor BLEU scores
-- [ ] Implement label smoothing (ε=0.1)
-- [ ] Add gradient clipping (paper uses 1.0)
-
-### Model Improvements
-- [ ] Weight tying between embedding and output layers
-- [ ] Add model checkpoint averaging
-- [ ] Implement mixed-precision training
-- [ ] Add proper model initialization (paper uses xavier_uniform_)
-
-### Evaluation
-- [ ] Add more robust evaluation metrics (e.g., ROUGE, METEOR)
-- [ ] Implement proper BLEU tokenization (mteval-v13a.pl)
-- [ ] Add validation during training
-- [ ] Log attention weights for visualization
-
-### Code Quality
-- [ ] Add comprehensive unit tests
-- [ ] Improve error handling and logging
-- [ ] Add type hints throughout the codebase
-- [ ] Document the training process and hyperparameters
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🚀 Features
 
@@ -213,33 +164,6 @@ python evaluate_final.py --model checkpoints/model_best.pt --data-dir data/multi
 
 ```bash
 python inference.py --model checkpoints/model_best.pt --input "Your input text here"
-```
-
-```bash
-python src/app.py
-```
-
-## 🏗️ Project Structure
-
-```
-.
-├── config/                 # Configuration files
-│   ├── train_config.yaml   # Training configuration
-│   └── model_config.yaml   # Model architecture configuration
-├── src/                    # Source code
-│   ├── data/               # Data loading and preprocessing
-│   ├── models/             # Model definitions
-│   ├── utils/              # Utility functions
-│   ├── train.py            # Training script
-│   ├── evaluate.py         # Evaluation script
-│   ├── inference.py        # Inference script
-│   └── app.py              # Web interface
-├── tests/                  # Unit tests
-├── docs/                   # Documentation
-├── checkpoints/            # Saved models
-├── runs/                   # TensorBoard logs
-├── requirements.txt        # Python dependencies
-└── README.md              # This file
 ```
 
 ## 📊 Model Architecture
@@ -336,32 +260,48 @@ plot_attention(
 )
 ```
 
-## 🛠 Development
-
-### Code Style
-
-This project uses:
-- Black for code formatting
-- isort for import sorting
-- flake8 for linting
-- mypy for type checking
-
-Run the following commands before committing:
-
-```bash
-black .
-isort .
-flake8
-mypy .
-```
-
 ### Testing
 
 ```bash
 pytest tests/
 ```
 
-## 📝 License
+
+## 📝 Notes
+
+- The current model shows signs of overfitting and requires further tuning
+- Training logs are saved to `logs/transformer.log`
+- Evaluation results are saved to `results/evaluation_results.json`
+- Model checkpoints are saved to `checkpoints/`
+
+## 🚧 TODO
+
+### High Priority
+- [ ] Implement proper learning rate scheduling with warmup (as per paper: 4000 warmup steps)
+- [ ] Add beam search for better inference quality
+- [ ] Fix tokenization issues causing poor BLEU scores
+- [ ] Implement label smoothing (ε=0.1)
+- [ ] Add gradient clipping (paper uses 1.0)
+
+### Model Improvements
+- [ ] Weight tying between embedding and output layers
+- [ ] Add model checkpoint averaging
+- [ ] Implement mixed-precision training
+- [ ] Add proper model initialization (paper uses xavier_uniform_)
+
+### Evaluation
+- [ ] Add more robust evaluation metrics (e.g., ROUGE, METEOR)
+- [ ] Implement proper BLEU tokenization (mteval-v13a.pl)
+- [ ] Add validation during training
+- [ ] Log attention weights for visualization
+
+### Code Quality
+- [ ] Add comprehensive unit tests
+- [ ] Improve error handling and logging
+- [ ] Add type hints throughout the codebase
+- [ ] Document the training process and hyperparameters
+
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -371,13 +311,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
 - [Hugging Face Transformers](https://github.com/huggingface/transformers)
 
-## 📧 Contact
-
-For questions or feedback, please open an issue or contact [Your Name] at [your.email@example.com].
-
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting pull requests.
+Contributions are welcome! Please read the general contributing guidelines before submitting pull requests.
 
 - Python 3.7+
 - PyTorch 1.9.0+
@@ -385,44 +321,6 @@ Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTIN
 - Spacy (for tokenization)
 - tqdm (for progress bars)
 
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/attention-is-all-you-need.git
-   cd attention-is-all-you-need
-   ```
-
-2. Install the required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Download the required language models for Spacy:
-   ```bash
-   python -m spacy download de_core_news_sm
-   python -m spacy download en_core_web_sm
-   ```
-
-## Training
-
-To train the model on the Multi30k dataset (German to English translation):
-
-```bash
-python train.py
-```
-
-Training parameters can be modified in the `Config` class in `train.py`.
-
-## Inference
-
-To use the trained model for translation:
-
-```bash
-python inference.py --model checkpoints/model.pt --vocab vocab.pt
-```
-
-This will start an interactive session where you can input German sentences to be translated to English.
 
 ## Results
 
